@@ -1,0 +1,6 @@
+---
+- name: Установить и настроить почтовый сервер
+  hosts: 10.0.0.2
+  become: yes
+  roles:
+    - mail_install

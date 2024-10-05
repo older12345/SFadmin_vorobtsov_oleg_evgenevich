@@ -1,0 +1,17 @@
+---
+- name: Установить Postfix
+  package:
+    name: postfix
+    state: present
+
+- name: Настроить Postfix
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+  notify: Restart Postfix
+
+- name: Убедиться, что Postfix запущен и включен
+  service:
+    name: postfix
+    state: started
+    enabled: yes

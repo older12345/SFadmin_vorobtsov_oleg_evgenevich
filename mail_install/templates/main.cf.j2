@@ -1,0 +1,8 @@
+# Основная конфигурация Postfix
+myhostname = {{ ansible_hostname }}
+mydomain = example.com
+myorigin = /etc/mailname
+mydestination = $myhostname, localhost.$mydomain, localhost
+relayhost =
+inet_interfaces = all
+inet_protocols = all
