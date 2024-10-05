@@ -1,0 +1,28 @@
+---
+- name: Установка PHP
+  hosts: ubuntu2
+  become: yes
+  tasks:
+    - name: Обновление списка пакетов
+      apt:
+        update_cache: yes
+
+    - name: Установка PHP
+      apt:
+        name: php
+        state: present
+
+    - name: Установка дополнительных модулей PHP
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - php-mysql
+        - php-xml
+        - php-mbstring
+        - php-curl
+
+    - name: Перезапуск Apache
+      service:
+        name: apache2
+        state: restarted
