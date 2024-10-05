@@ -1,0 +1,4 @@
+---
+- hosts: ubuntu2
+  roles:
+    - apache_install
