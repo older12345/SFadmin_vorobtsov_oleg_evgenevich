@@ -1,0 +1,18 @@
+---
+- name: Установить Zabbix Agent
+  apt:
+    name: zabbix-agent
+    state: present
+  become: yes
+
+- name: Настроить Zabbix Agent
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+  notify: Restart Zabbix Agent
+
+- name: Запустить Zabbix Agent
+  service:
+    name: zabbix-agent
+    state: started
+    enabled: yes

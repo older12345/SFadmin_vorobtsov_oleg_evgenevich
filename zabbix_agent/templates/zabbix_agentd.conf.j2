@@ -1,0 +1,4 @@
+# ~/SFadmin_vorobtsov_oleg_evgenevich/zabbix_agent/templates/zabbix_agentd.conf.j2
+LogFile=/var/log/zabbix/zabbix_agentd.log
+Server={{ zabbix_server_ip }}
+Hostname={{ ansible_hostname }}

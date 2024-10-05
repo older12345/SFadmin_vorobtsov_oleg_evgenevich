@@ -1,0 +1,19 @@
+# ~/SFadmin_vorobtsov_oleg_evgenevich/install_zabbix_agent.yml
+---
+- hosts: ubuntu2
+  become: yes
+  vars:
+    zabbix_server_ip: "10.0.0.1"  # IP адрес вашего Zabbix сервера
+
+  roles:
+    - zabbix_agent
+
+- hosts: redhat3
+  become: yes
+  vars:
+     zabbix_server_ip: "10.0.0.1"
+  tasks:
+    - name: Install Python 3 if not present
+      yum:
+        name: python3
+        state: present
