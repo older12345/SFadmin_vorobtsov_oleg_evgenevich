@@ -1,0 +1,14 @@
+---
+# Обработчик для перезапуска BIND
+- name: Restart BIND
+  service:
+    name: bind9
+    state: restarted
+  when: ansible_os_family == "Debian"
+
+- name: Restart BIND on CentOS
+  service:
+    name: named
+    state: restarted
+  when: ansible_os_family == "RedHat"
+

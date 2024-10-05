@@ -1,0 +1,10 @@
+options {
+    directory "/var/cache/bind";
+
+    recursion yes;                # allows recursive queries
+    allow-recursion { any; };     # allow recursion for all clients
+
+    listen-on { any; };           # listen on all interfaces
+    allow-transfer { none; };     # disable zone transfers
+};
+

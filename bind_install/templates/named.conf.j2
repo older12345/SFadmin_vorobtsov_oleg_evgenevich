@@ -1,0 +1,17 @@
+options {
+    directory "/var/cache/bind";
+
+    forwarders {
+        8.8.8.8;  // Google DNS
+        8.8.4.4;  // Google DNS
+    };
+
+    dnssec-validation auto;
+    auth-nxdomain no;    # conform to RFC1035
+    listen-on { any; };
+};
+
+zone "example.com" {
+    type master;
+    file "/etc/bind/db.example.com";
+};

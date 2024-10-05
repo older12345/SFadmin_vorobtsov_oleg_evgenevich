@@ -1,0 +1,70 @@
+---
+- name: Установить BIND9
+  package:
+    name: bind9
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Установить BIND на CentOS
+  package:
+    name: bind  # проверьте, что этот пакет доступен на CentOS
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Установить утилиты BIND
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - dnsutils
+  when: ansible_os_family == "Debian"
+
+- name: Установить утилиты BIND на CentOS
+  package:
+    name: bind-utils  # правильное имя пакета для CentOS
+    state: present
+  when: ansible_os_family == "RedHat"
+
+# Создание директории для конфигурации BIND на Debian
+- name: Создать директорию для конфигурации BIND
+  file:
+    path: /etc/bind
+    state: directory
+  when: ansible_os_family == "Debian"
+
+# Создание директории для конфигурации BIND на CentOS
+- name: Создать директорию для конфигурации BIND на CentOS
+  file:
+    path: /etc/named
+    state: directory
+  when: ansible_os_family == "RedHat"
+
+# Настройка DNS-сервера для Debian
+- name: Настроить DNS-сервер
+  template:
+    src: named.conf.j2
+    dest: /etc/bind/named.conf
+  notify: Restart BIND
+  when: ansible_os_family == "Debian"
+
+# Настройка DNS-сервера для CentOS
+- name: Настроить DNS-сервер на CentOS
+  template:
+    src: named.conf.j2
+    dest: /etc/named/named.conf  # Путь для CentOS
+  notify: Restart BIND
+  when: ansible_os_family == "RedHat"
+
+- name: Настроить зоны DNS для Debian
+  template:
+    src: db.example.com.j2
+    dest: /etc/bind/db.example.com
+  notify: Restart BIND
+  when: ansible_os_family == "Debian"
+
+- name: Настроить зоны DNS на CentOS
+  template:
+    src: db.example.com.j2
+    dest: /etc/named/db.example.com  # Путь для CentOS
+  notify: Restart BIND
+  when: ansible_os_family == "RedHat"

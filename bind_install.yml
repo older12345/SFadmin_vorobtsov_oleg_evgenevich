@@ -1,0 +1,6 @@
+---
+- hosts: ubuntu2, ubuntu1, redhat3
+  become: yes
+  roles:
+    - bind_install
+
