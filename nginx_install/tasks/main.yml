@@ -1,0 +1,13 @@
+---
+- name: Установка nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Убедиться, что nginx запущен
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
