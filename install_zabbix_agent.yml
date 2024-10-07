@@ -1,19 +1,60 @@
-# ~/SFadmin_vorobtsov_oleg_evgenevich/install_zabbix_agent.yml
 ---
 - hosts: ubuntu2
   become: yes
   vars:
     zabbix_server_ip: "10.0.0.1"  # IP адрес вашего Zabbix сервера
 
-  roles:
-    - zabbix_agent
+  tasks:
+    - name: Установить Zabbix Agent
+      apt:
+        name: zabbix-agent
+        state: present
+
+    - name: Настроить Zabbix Agent
+      template:
+        src: zabbix_agent/templates/zabbix_agentd.conf.j2
+        dest: /etc/zabbix/zabbix_agentd.conf
+      notify: Restart Zabbix Agent
+
+    - name: Запустить Zabbix Agent
+      service:
+        name: zabbix-agent
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart Zabbix Agent
+      service:
+        name: zabbix-agent
+        state: restarted
 
 - hosts: redhat3
   become: yes
   vars:
-     zabbix_server_ip: "10.0.0.1"
+    zabbix_server_ip: "10.0.0.1"  # IP адрес вашего Zabbix сервера
+
   tasks:
-    - name: Install Python 3 if not present
+    - name: Установить необходимые зависимости
       yum:
-        name: python3
+        name:
+          - epel-release  # Установите EPEL, если он еще не установлен
+          - zabbix-agent
         state: present
+
+    - name: Настроить Zabbix Agent
+      template:
+        src: zabbix_agent/templates/zabbix_agentd.conf.j2
+        dest: /etc/zabbix/zabbix_agentd.conf
+      notify: Restart Zabbix Agent
+
+    - name: Запустить Zabbix Agent
+      service:
+        name: zabbix-agent
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart Zabbix Agent
+      service:
+        name: zabbix-agent
+        state: restarted

@@ -1,0 +1,6 @@
+---
+- name: Установить PostgreSQL-12 на Red Hat
+  hosts: redhat3  # Убедитесь, что это имя группы соответствует тому, что в вашем инвентаре
+  become: yes      # Если нужны права суперпользователя
+  tasks:
+    - include_tasks: postgresql_install/tasks/main.yml

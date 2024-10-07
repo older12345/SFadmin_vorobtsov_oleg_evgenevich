@@ -1,0 +1,37 @@
+---
+- name: Установить EPEL release
+  yum:
+    name: epel-release
+    state: present
+
+- name: Установить GPG ключ для PostgreSQL
+  rpm_key:
+    state: present
+    key: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+- name: Установить репозиторий PostgreSQL из RPM
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+- name: Установить необходимые зависимости
+  yum:
+    name:
+      - llvm-toolset-7
+      - llvm-toolset-7-clang
+      - llvm5.0-devel
+      - perl-Test-Simple
+      - perl-IPC-Run
+      - libicu-devel
+      - ncurses-devel
+    state: present
+  ignore_errors: true  # Игнорируем ошибки для отладки
+
+- name: Установить пакеты PostgreSQL-12
+  yum:
+    name:
+      - postgresql12
+      - postgresql12-server
+      - postgresql12-devel
+      - postgresql12-libs
+    state: present
